@@ -2,11 +2,11 @@
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-[#1C1B20] text-[#F5F6F1]">
+    <footer className="relative w-full bg-[#1C1B20] text-[#F5F6F1] overflow-x-hidden">
       <div
-        className="relative mx-auto max-w-[1920px] 
-        h-auto md:h-[530px]
-        px-[24px] sm:px-[48px] md:px-[104px] 
+        className="relative mx-auto max-w-[1920px]
+        h-auto md:min-h-[530px]
+        px-[24px] sm:px-[48px] md:px-[104px]
         pt-[60px] sm:pt-[100px] md:pt-[180px]
         pb-[40px] sm:pb-[60px] md:pb-0
         flex flex-col justify-end"
@@ -32,12 +32,21 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Gregori nimi */}
+        {/* GREGOR HARGEL */}
         <h2
-          className="font-extrabold uppercase tracking-[-0.01em] leading-[1.1]
-          text-[44px] sm:text-[60px] md:text-[120px] lg:text-[160px] xl:text-[185px]
-          text-left mb-[20px] md:mb-[45px]
-          whitespace-nowrap"
+          className="
+            font-extrabold uppercase tracking-[-0.01em] leading-[1.08]
+            text-left mb-[20px] md:mb-[45px]
+            /* Mobiilis: võib murduda, et mitte lõigata */
+            whitespace-normal break-words
+            text-[clamp(2rem,8.5vw,2.75rem)]        /* ~32–44px */
+            /* ≥640px: hoia ühel real ja lase suuremaks minna */
+            sm:whitespace-nowrap
+            sm:text-[clamp(2.5rem,7.5vw,4rem)]      /* ~40–64px */
+            md:text-[clamp(3rem,6.8vw,6.5rem)]      /* ~48–104px */
+            lg:text-[clamp(3.5rem,6vw,9rem)]        /* ~56–144px */
+            xl:text-[clamp(4rem,5.5vw,11.5rem)]     /* ~64–184px */
+          "
         >
           GREGOR HARGEL
         </h2>
