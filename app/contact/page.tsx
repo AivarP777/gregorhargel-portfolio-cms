@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 export default function ContactPage() {
   return (
     <main className="bg-[#F5F5F1] min-h-screen">
@@ -45,27 +47,30 @@ export default function ContactPage() {
             grid grid-cols-1 lg:grid-cols-12 gap-[60px] md:gap-[80px]
           "
         >
-          {/* Vorm — mobiilis eespool */}
+          {/* Vorm */}
           <div className="lg:col-span-7 order-1 lg:order-2">
             <form className="max-w-[700px] mx-auto lg:mx-0 space-y-10">
               <div>
                 <input
                   type="text"
                   placeholder="Your Name"
-                  className="w-full border-b border-[#29282D] bg-transparent py-4 text-[18px] sm:text-[20px] outline-none placeholder:text-[#29282D]/50"
+                  className="w-full border-b border-[#29282D] bg-transparent py-4 text-[18px] sm:text-[20px] 
+                             outline-none placeholder:text-[#29282D]/50 text-[#29282D] caret-[#29282D]"
                 />
               </div>
               <div>
                 <input
                   type="email"
                   placeholder="Your Email"
-                  className="w-full border-b border-[#29282D] bg-transparent py-4 text-[18px] sm:text-[20px] outline-none placeholder:text-[#29282D]/50"
+                  className="w-full border-b border-[#29282D] bg-transparent py-4 text-[18px] sm:text-[20px] 
+                             outline-none placeholder:text-[#29282D]/50 text-[#29282D] caret-[#29282D]"
                 />
               </div>
               <div>
                 <textarea
                   placeholder="Your Message"
-                  className="w-full border-b border-[#29282D] bg-transparent py-4 text-[18px] sm:text-[20px] h-[150px] resize-none outline-none placeholder:text-[#29282D]/50"
+                  className="w-full border-b border-[#29282D] bg-transparent py-4 text-[18px] sm:text-[20px] h-[150px] 
+                             resize-none outline-none placeholder:text-[#29282D]/50 text-[#29282D] caret-[#29282D]"
                 />
               </div>
 
@@ -86,7 +91,7 @@ export default function ContactPage() {
             </form>
           </div>
 
-          {/* Kontaktinfo — mobiilis lõpus */}
+          {/* Kontaktinfo */}
           <div className="lg:col-span-5 order-2 lg:order-1">
             <div className="space-y-8 mt-[60px] lg:mt-0 text-center lg:text-left">
               <div>

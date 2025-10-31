@@ -55,7 +55,7 @@ export default function Hero() {
         >
           <h2
             className="
-              font-extrabold text-black uppercase leading-[1.1] text-left
+              font-extrabold text-[#29282D] uppercase leading-[1.1] text-left
               /* sinu algsed baassuurused väiksematel */
               text-[28px] sm:text-[36px]
               /* sujuv desktop: 48px... kuni 86px */

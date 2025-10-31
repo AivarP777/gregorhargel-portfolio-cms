@@ -23,7 +23,7 @@ export default function Gallery() {
     transform translate-y-[20px] sm:translate-y-0
   "
 >
-  New Gem
+  Freshly Baked
 </h2>
 
 
@@ -45,12 +45,13 @@ export default function Gallery() {
 
         {/* TEKST paremal / video all telefonis */}
         <div
-          className="
-            col-span-12 lg:col-span-4
-            mt-6 sm:mt-8 md:mt-0
-            px-[4%] sm:px-[8%] md:px-0
-          "
-        >
+  className="
+    col-span-12 lg:col-span-4
+    -mt-3 sm:mt-8 md:mt-0     /* ↓ väiksem vahe ainult telefonis */
+    px-[4%] sm:px-[8%] md:px-0
+  "
+>
+
           <div className="text-[#29282D]/70 font-light text-[14px] tracking-wide uppercase mb-2 text-left">
             Commercial
           </div>
