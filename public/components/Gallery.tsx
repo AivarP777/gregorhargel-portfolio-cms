@@ -3,8 +3,7 @@
 import Link from 'next/link'
 
 export default function Gallery() {
-  const src = '/videos/sample2.mp4'
-  const poster = '/images/sample2.png'
+  const vimeoUrl = 'https://player.vimeo.com/video/1130428641'
 
   return (
     <section
@@ -16,42 +15,38 @@ export default function Gallery() {
     >
       {/* Pealkiri */}
       <h2
-  className="
-    mb-15 sm:mb-16 text-[#29282D] font-extrabold uppercase leading-[1.05]
-    text-[40px] sm:text-[60px] lg:text-[96px]
-    text-center md:text-left
-    transform translate-y-[20px] sm:translate-y-0
-  "
->
-  Freshly Baked
-</h2>
-
+        className="
+          mb-15 sm:mb-16 text-[#29282D] font-extrabold uppercase leading-[1.05]
+          text-[40px] sm:text-[60px] lg:text-[96px]
+          text-center md:text-left
+          transform translate-y-[20px] sm:translate-y-0
+        "
+      >
+        Freshly Baked
+      </h2>
 
       <div className="grid grid-cols-12 gap-8 items-start">
         {/* VIDEO vasakul */}
         <div className="col-span-12 lg:col-span-8">
           <div className="relative w-full overflow-hidden aspect-video border border-black">
-            <video
-              className="absolute inset-0 h-full w-full object-cover"
-              src={src}
-              poster={poster}
-              controls
-              playsInline
-              preload="metadata"
-              controlsList="nodownload noplaybackrate"
+            <iframe
+              src={vimeoUrl}
+              className="absolute inset-0 w-full h-full"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              title="Vimeo video player"
             />
           </div>
         </div>
 
         {/* TEKST paremal / video all telefonis */}
         <div
-  className="
-    col-span-12 lg:col-span-4
-    -mt-3 sm:mt-8 md:mt-0     /* ↓ väiksem vahe ainult telefonis */
-    px-[4%] sm:px-[8%] md:px-0
-  "
->
-
+          className="
+            col-span-12 lg:col-span-4
+            -mt-3 sm:mt-8 md:mt-0
+            px-[4%] sm:px-[8%] md:px-0
+          "
+        >
           <div className="text-[#29282D]/70 font-light text-[14px] tracking-wide uppercase mb-2 text-left">
             Commercial
           </div>
@@ -71,10 +66,11 @@ export default function Gallery() {
               text-left
             "
           >
-            When I began editing the first rough cut, I asked myself — what does cooking represent to me? The answer that came instantly was elegance. That idea shaped the entire mood of the piece and led me to the perfect music choice for this commercial.
+            When I began editing the first rough cut, I asked myself — what does cooking represent to me? 
+            The answer that came instantly was elegance. That idea shaped the entire mood of the piece 
+            and led me to the perfect music choice for this commercial.
           </p>
 
-          {/* ✨ Uus animatsiooniga nupp */}
           <Link
             href="/portfolio"
             className="

@@ -1,16 +1,36 @@
 'use client'
 
 export default function PortfolioChecker() {
+  // 🎬 Siin muuda oma Vimeo videote lingid
+  const vimeo1 = 'https://player.vimeo.com/video/1130428641'
+  const vimeo2 = 'https://player.vimeo.com/video/1132399736'
+  const vimeo3 = 'https://player.vimeo.com/video/1130428621'
+
   const projects = [
-    { id: 1, videoOnRight: false, src: '/videos/sample2.mp4', poster: '/images/sample2.png',
-      label: 'Commercial', title: 'Unsplice Kitchen',
-      text: 'When I began editing the first rough cut, I asked myself — what does cooking represent to me? The answer that came instantly was elegance. That idea shaped the entire mood of the piece and led me to the perfect music choice for this commercial.' },
-    { id: 2, videoOnRight: true, src: '/videos/sample3.mp4', poster: '/images/sample3.jpg',
-      label: 'Cinematic Short', title: 'Everyday Rhythm',
-      text: 'Everyday sounds, cinematic rhythm. A 20-second edit built entirely around pacing, texture, and tension.' },
-    { id: 3, videoOnRight: false, src: '/videos/sample4.mp4', poster: '/images/sample4.png',
-      label: 'Concept Piece', title: 'One-Shot Message',
-      text: 'Project goal was to give a message to the viewer with only one shot followed by a title. Simple and engaging edit.' },
+    {
+      id: 1,
+      videoOnRight: false,
+      src: vimeo1,
+      label: 'Commercial',
+      title: 'Unsplice Kitchen',
+      text: 'When I began editing the first rough cut, I asked myself — what does cooking represent to me? The answer that came instantly was elegance. That idea shaped the entire mood of the piece and led me to the perfect music choice for this commercial.',
+    },
+    {
+      id: 2,
+      videoOnRight: true,
+      src: vimeo2,
+      label: 'Cinematic Short',
+      title: 'Everyday Rhythm',
+      text: 'Everyday sounds, cinematic rhythm. A 20-second edit built entirely around pacing, texture, and tension.',
+    },
+    {
+      id: 3,
+      videoOnRight: false,
+      src: vimeo3,
+      label: 'Concept Piece',
+      title: 'One-Shot Message',
+      text: 'Project goal was to give a message to the viewer with only one shot followed by a title. Simple and engaging edit.',
+    },
   ]
 
   return (
@@ -20,22 +40,20 @@ export default function PortfolioChecker() {
           key={p.id}
           className="
             grid grid-cols-1 md:grid-cols-2 gap-0 bg-[#F5F5F1]
-            pb-[24px] sm:pb-[32px] md:pb-0           /* ↑ mobiilis lisapadding all */
-            mb-[48px] sm:mb-[64px] md:mb-0           /* ↑ mobiilis suurem vahe järgmise plokini */
-            last:mb-0 md:last:mb-0                   /* ära lisa viimasele mobiilis */
+            pb-[24px] sm:pb-[32px] md:pb-0
+            mb-[48px] sm:mb-[64px] md:mb-0
+            last:mb-0 md:last:mb-0
           "
         >
           {/* VIDEO */}
           <div className={`${p.videoOnRight ? 'md:order-2' : 'md:order-1'}`}>
             <div className="relative aspect-video overflow-hidden">
-              <video
-                className="absolute inset-0 h-full w-full object-cover"
+              <iframe
                 src={p.src}
-                poster={p.poster}
-                controls
-                playsInline
-                preload="metadata"
-                controlsList="nodownload noplaybackrate"
+                className="absolute inset-0 w-full h-full"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title={`Vimeo video ${p.title}`}
               />
             </div>
           </div>
