@@ -2,27 +2,15 @@
 
 export default function PortfolioChecker() {
   const projects = [
-    {
-      id: 1,
-      videoOnRight: false,
-      src: '/videos/sample2.mp4',
-      poster: '/images/sample2.png',
-      text: 'When I began editing the first rough cut, I asked myself — what does cooking represent to me? The answer that came instantly was elegance. That idea shaped the entire mood of the piece and led me to the perfect music choice for this commercial.',
-    },
-    {
-      id: 2,
-      videoOnRight: true,
-      src: '/videos/sample3.mp4',
-      poster: '/images/sample3.jpg',
-      text: 'Everyday sounds, cinematic rhythm. A 20-second edit built entirely around pacing, texture, and tension.',
-    },
-    {
-      id: 3,
-      videoOnRight: false,
-      src: '/videos/sample4.mp4',
-      poster: '/images/sample4.png',
-      text: 'Project goal was to give a message to the viewer with only one shot followed by a title. Simple and engaging edit.',
-    },
+    { id: 1, videoOnRight: false, src: '/videos/sample2.mp4', poster: '/images/sample2.png',
+      label: 'Commercial', title: 'Unsplice Kitchen',
+      text: 'When I began editing the first rough cut, I asked myself — what does cooking represent to me? The answer that came instantly was elegance. That idea shaped the entire mood of the piece and led me to the perfect music choice for this commercial.' },
+    { id: 2, videoOnRight: true, src: '/videos/sample3.mp4', poster: '/images/sample3.jpg',
+      label: 'Cinematic Short', title: 'Everyday Rhythm',
+      text: 'Everyday sounds, cinematic rhythm. A 20-second edit built entirely around pacing, texture, and tension.' },
+    { id: 3, videoOnRight: false, src: '/videos/sample4.mp4', poster: '/images/sample4.png',
+      label: 'Concept Piece', title: 'One-Shot Message',
+      text: 'Project goal was to give a message to the viewer with only one shot followed by a title. Simple and engaging edit.' },
   ]
 
   return (
@@ -31,16 +19,14 @@ export default function PortfolioChecker() {
         <div
           key={p.id}
           className="
-            grid grid-cols-1 md:grid-cols-2 gap-0
-            bg-[#F5F5F1]
+            grid grid-cols-1 md:grid-cols-2 gap-0 bg-[#F5F5F1]
+            pb-[24px] sm:pb-[32px] md:pb-0           /* ↑ mobiilis lisapadding all */
+            mb-[48px] sm:mb-[64px] md:mb-0           /* ↑ mobiilis suurem vahe järgmise plokini */
+            last:mb-0 md:last:mb-0                   /* ära lisa viimasele mobiilis */
           "
         >
-          {/* Vasak / Ülemine pool (video) */}
-          <div
-            className={`
-              ${p.videoOnRight ? 'md:order-2' : 'md:order-1'}
-            `}
-          >
+          {/* VIDEO */}
+          <div className={`${p.videoOnRight ? 'md:order-2' : 'md:order-1'}`}>
             <div className="relative aspect-video overflow-hidden">
               <video
                 className="absolute inset-0 h-full w-full object-cover"
@@ -54,14 +40,22 @@ export default function PortfolioChecker() {
             </div>
           </div>
 
-          {/* Parem / Alumine pool (tekst) */}
+          {/* TEKST */}
           <div
             className={`
-              flex items-center justify-center px-[24px] sm:px-[48px] md:px-[64px] py-[28px] md:py-[36px]
+              flex flex-col justify-center
+              px-[24px] sm:px-[48px] md:px-[64px]
+              py-[28px] md:py-[36px]
               ${p.videoOnRight ? 'md:order-1' : 'md:order-2'}
             `}
           >
-            <p className="max-w-[700px] text-[#29282D] font-extralight text-[18px] sm:text-[20px] lg:text-[32px] leading-[1.45] text-left">
+            <div className="text-[#29282D]/70 font-light text-[14px] tracking-wide uppercase mb-2 text-left">
+              {p.label}
+            </div>
+            <h3 className="text-[#29282D] font-extrabold uppercase leading-[1.1] text-[22px] sm:text-[28px] lg:text-[32px] text-left">
+              {p.title}
+            </h3>
+            <p className="mt-3 sm:mt-4 text-[#29282D] font-extralight text-[16px] sm:text-[18px] leading-[1.5] text-left max-w-[700px]">
               {p.text}
             </p>
           </div>
