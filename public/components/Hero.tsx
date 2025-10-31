@@ -7,22 +7,26 @@ export default function Hero() {
   return (
     <section
       className="
-        mx-auto max-w-[1920px] bg-[#F5F5F1]
+        mx-auto max-w-[1920px] bg-[#F5F5F1] overflow-x-clip
         px-5 pt-[40px] sm:px-[60px] md:px-[80px] lg:px-[100px] lg:pt-[70px]
       "
     >
       {/* PEALKIRI */}
       <h1
-  className="
-    text-[#29282D] font-extrabold leading-[1.085] tracking-[-0.01em]
-    text-[40px] sm:text-[64px] md:text-[96px] lg:text-[150px] 2xl:text-[185px]
-    text-center md:text-left whitespace-nowrap
-    transform -translate-y-[40px] md:translate-y-0
-  "
->
-  GREGOR HARGEL
-</h1>
-
+        className="
+          text-[#29282D] font-extrabold leading-[1.085] tracking-[-0.01em]
+          /* sinu algsed baassuurused väiksematel */
+          text-[40px] sm:text-[64px]
+          /* alates md teeme sujuvaks: 96px max... kuni 150px/185px */
+          md:text-[clamp(96px,8.2vw,150px)]
+          lg:text-[clamp(120px,7.8vw,150px)]
+          2xl:text-[clamp(150px,9.6vw,185px)]
+          text-center md:text-left whitespace-nowrap
+          transform -translate-y-[40px] md:translate-y-0
+        "
+      >
+        GREGOR HARGEL
+      </h1>
 
       {/* GRID */}
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
@@ -51,9 +55,14 @@ export default function Hero() {
         >
           <h2
             className="
-              font-extrabold text-black uppercase leading-[1.1]
-              text-[28px] sm:text-[36px] md:text-[48px] lg:text-[64px] 2xl:text-[86px]
-              text-left
+              font-extrabold text-black uppercase leading-[1.1] text-left
+              /* sinu algsed baassuurused väiksematel */
+              text-[28px] sm:text-[36px]
+              /* sujuv desktop: 48px... kuni 86px */
+              md:text-[clamp(48px,3.6vw,64px)]
+              2xl:text-[clamp(64px,4.4vw,86px)]
+              /* ei lase sõnadel ümber murduda – ridade asetus jääb samaks */
+              whitespace-nowrap
             "
           >
             BALI-BASED<br />VIDEO EDITOR
@@ -62,9 +71,10 @@ export default function Hero() {
           <div className="mt-6 lg:mt-auto text-left">
             <p
               className="
-                max-w-[698px] text-[#29282D] font-extralight
-                text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] 2xl:text-[32px]
-                leading-[1.55]
+                max-w-[698px] text-[#29282D] font-extralight leading-[1.55]
+                text-[16px] sm:text-[18px]
+                md:text-[clamp(20px,1.2vw,24px)]
+                2xl:text-[clamp(24px,1.7vw,32px)]
               "
             >
               Gregor Hargel is a Bali-based video editor focused on short-form

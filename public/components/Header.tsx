@@ -81,7 +81,7 @@ export default function Header() {
 
         {/* MOBILE (alla md) */}
         <div className="md:hidden">
-          <div className="h-[72px] px-5">
+          <div className="h-[100px] px-5">
             <div className="flex h-full items-center">
               <Link
                 href="/"
@@ -125,7 +125,7 @@ export default function Header() {
             aria-modal="true"
           >
             {/* Ülaosa: logo + sulgemine */}
-            <div className="flex h-[72px] items-center px-5 border-b border-black/80">
+            <div className="flex h-[100px] items-center px-5 border-b border-black/80">
               <span className={`${inter.className} uppercase text-[16px]`}>Gregor Hargel</span>
               <button
                 aria-label="Close menu"
