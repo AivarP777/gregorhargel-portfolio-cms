@@ -34,7 +34,7 @@ export default function Hero() {
         <div className="col-span-12 lg:col-span-7 flex justify-center lg:block">
           <div className="relative w-[90%] sm:w-[80%] md:w-[70%] lg:w-full overflow-hidden aspect-[940/1170]">
             <Image
-              src="/images/greks.webp"
+              src="/images/greks1.jpg"
               alt="Gregor portrait"
               fill
               sizes="(min-width:1024px) 58vw, 100vw"

@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 export default function Footer() {
   return (
     <footer className="relative w-full bg-[#1C1B20] text-[#F5F6F1] overflow-x-hidden">
@@ -16,7 +18,7 @@ export default function Footer() {
           className="md:absolute md:bottom-[280px] md:left-[104px]
           left-[24px] right-[24px] sm:left-[48px] sm:right-[48px]
           text-left md:max-w-[800px]
-          mb-[50px] md:mb-0"
+          mb-[50px] md:-mb-8"
         >
           <p className="text-[#F5F6F1]/85 font-extralight text-[15px] sm:text-[18px] md:text-[24px] leading-[1.4] mb-4">
             “His commercial editing is going from strength to strength. He only has two videos
@@ -24,10 +26,10 @@ export default function Footer() {
           </p>
           <div>
             <h3 className="text-[#F5F6F1] font-semibold text-[15px] sm:text-[17px] md:text-[22px]">
-              — Emmy
+              — Shiny Perkins
             </h3>
             <p className="text-[#F5F6F1]/60 font-light text-[13px] sm:text-[15px]">
-              Nominated Editor, Director
+              Emmy-nominated editor and founder of Unsplice
             </p>
           </div>
         </div>
@@ -50,6 +52,18 @@ export default function Footer() {
         >
           GREGOR HARGEL
         </h2>
+        {/* Made by DuoCom */}
+        <div className="hidden md:block absolute bottom-[20px] right-[104px] text-right">
+  <Link
+    href="https://www.duocom.ee"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-[#F5F6F1]/50 hover:text-[#F5F6F1] text-[14px] font-light transition-colors duration-300"
+  >
+    made by <span className="font-normal">DuoCom</span>
+  </Link>
+</div>
+
       </div>
     </footer>
   )
