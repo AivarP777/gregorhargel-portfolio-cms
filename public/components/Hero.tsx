@@ -70,17 +70,16 @@ export default function Hero() {
 
           <div className="mt-6 lg:mt-auto text-left">
             <p
-              className="
-                max-w-[698px] text-[#29282D] font-extralight leading-[1.55]
-                text-[16px] sm:text-[18px]
-                md:text-[clamp(20px,1.2vw,24px)]
-                2xl:text-[clamp(24px,1.7vw,32px)]
-              "
-            >
-              Gregor Hargel is a Bali-based video editor focused on short-form
-              videos with a smooth, cinematic rhythm — blending seamless flow,
-              sharp pacing, and storytelling that keeps viewers hooked.
-            </p>
+  className="
+    max-w-[698px] text-[#29282D] font-normal leading-[1.55]
+    text-[16px] sm:text-[18px] md:text-[clamp(20px,1.2vw,24px)] sm:text-[clamp(24px,1.7vw,32px)]
+  "
+>
+  Gregor Hargel is a Bali-based video editor focused on short-form
+  videos with a smooth, cinematic rhythm — blending seamless flow,
+  sharp pacing, and storytelling that keeps viewers hooked.
+</p>
+
 
             <Link
               href="/portfolio"
