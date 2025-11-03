@@ -3,7 +3,7 @@
 export default function PortfolioChecker() {
   // 🎬 Siin muuda oma Vimeo videote lingid
   const vimeo1 = 'https://player.vimeo.com/video/1130428641'
-  const vimeo2 = 'https://player.vimeo.com/video/1132399736'
+  const vimeo2 = 'https://player.vimeo.com/video/1133050909'
   const vimeo3 = 'https://player.vimeo.com/video/1130428621'
 
   const projects = [
