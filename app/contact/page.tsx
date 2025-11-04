@@ -1,8 +1,11 @@
 'use client'
 
-import Link from 'next/link'
+import { useState } from 'react'
 
 export default function ContactPage() {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
+
   return (
     <main className="bg-[#F5F5F1] min-h-screen">
       <section
@@ -49,33 +52,82 @@ export default function ContactPage() {
         >
           {/* Vorm */}
           <div className="lg:col-span-7 order-1 lg:order-2">
-            <form className="max-w-[700px] mx-auto lg:mx-0 space-y-10">
+            <form
+              className="max-w-[700px] mx-auto lg:mx-0 space-y-10"
+              onSubmit={async (e) => {
+                e.preventDefault()
+                setStatus('sending')
+                setErrorMsg(null)
+
+                const form = e.currentTarget as HTMLFormElement
+                const name = (form.elements.namedItem('name') as HTMLInputElement)?.value.trim()
+                const email = (form.elements.namedItem('email') as HTMLInputElement)?.value.trim()
+                const message = (form.elements.namedItem('message') as HTMLTextAreaElement)?.value.trim()
+
+                // Basic client-side sanity checks
+                if (!name || !email || !message) {
+                  setStatus('error')
+                  setErrorMsg('Please fill in all fields.')
+                  return
+                }
+
+                const res = await fetch('/api/contacts', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ name, email, message }),
+                })
+
+                try {
+                  const data = await res.json().catch(() => ({}))
+                  if (res.ok && (data?.ok ?? true)) {
+                    setStatus('sent')
+                    form.reset()
+                  } else {
+                    setStatus('error')
+                    setErrorMsg(data?.error || 'Send failed. Please try again.')
+                  }
+                } catch {
+                  setStatus('error')
+                  setErrorMsg('Unexpected error. Please try again.')
+                }
+              }}
+            >
               <div>
                 <input
+                  name="name"
                   type="text"
                   placeholder="Your Name"
+                  required
                   className="w-full border-b border-[#29282D] bg-transparent py-4 text-[18px] sm:text-[20px] 
                              outline-none placeholder:text-[#29282D]/50 text-[#29282D] caret-[#29282D]"
+                  aria-label="Your Name"
                 />
               </div>
               <div>
                 <input
+                  name="email"
                   type="email"
                   placeholder="Your Email"
+                  required
                   className="w-full border-b border-[#29282D] bg-transparent py-4 text-[18px] sm:text-[20px] 
                              outline-none placeholder:text-[#29282D]/50 text-[#29282D] caret-[#29282D]"
+                  aria-label="Your Email"
                 />
               </div>
               <div>
                 <textarea
+                  name="message"
                   placeholder="Your Message"
+                  required
                   className="w-full border-b border-[#29282D] bg-transparent py-4 text-[18px] sm:text-[20px] h-[150px] 
                              resize-none outline-none placeholder:text-[#29282D]/50 text-[#29282D] caret-[#29282D]"
+                  aria-label="Your Message"
                 />
               </div>
 
               <button
                 type="submit"
+                disabled={status === 'sending'}
                 className="
                   inline-flex h-[52px] sm:h-[56px] items-center justify-center
                   border border-[#29282D] bg-[#F5F6F1] px-8 sm:px-10
@@ -83,11 +135,23 @@ export default function ContactPage() {
                   transition-all duration-300 ease-in-out
                   hover:bg-[#29282D] hover:text-[#F5F6F1]
                   active:scale-[0.98]
-                  cursor-pointer
+                  cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed
                 "
               >
-                Send Message
+                {status === 'sending' ? 'Sending…' : 'Send Message'}
               </button>
+
+              {/* Success / Error state */}
+              {status === 'sent' && (
+                <p className="text-green-700 text-sm sm:text-base">
+                  Thanks! A confirmation email has been sent to your inbox.
+                </p>
+              )}
+              {status === 'error' && (
+                <p className="text-red-600 text-sm sm:text-base">
+                  {errorMsg || 'Something went wrong.'}
+                </p>
+              )}
             </form>
           </div>
 
