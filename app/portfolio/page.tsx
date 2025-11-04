@@ -36,7 +36,7 @@ export default function PortfolioPage() {
           px-[4px] sm:px-0
         "
       >
-        A small but growing collection — each project crafted with intention,
+        A growing collection — each project crafted with intention,
         rhythm, and personality.
       </p>
 
