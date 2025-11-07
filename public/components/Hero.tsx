@@ -1,9 +1,23 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Hero() {
+  const [isMounted, setIsMounted] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    setIsMounted(true)
+    const handleScroll = () => setScrollY(window.scrollY || 0)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // liigutame pilti natuke – väike, sujuv parallax
+  const offset = Math.max(Math.min(scrollY * 0.06, 40), -40)
+
   return (
     <section
       className="
@@ -13,17 +27,16 @@ export default function Hero() {
     >
       {/* PEALKIRI */}
       <h1
-        className="
+        className={`
           text-[#29282D] font-extrabold leading-[1.085] tracking-[-0.01em]
-          /* sinu algsed baassuurused väiksematel */
           text-[40px] sm:text-[64px]
-          /* alates md teeme sujuvaks: 96px max... kuni 150px/185px */
           md:text-[clamp(96px,8.2vw,150px)]
           lg:text-[clamp(120px,7.8vw,150px)]
           2xl:text-[clamp(150px,9.6vw,185px)]
           text-center md:text-left whitespace-nowrap
-          transform -translate-y-[40px] md:translate-y-0
-        "
+          transition-all duration-700 ease-out transform
+          ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}
+        `}
       >
         GREGOR HARGEL
       </h1>
@@ -32,36 +45,46 @@ export default function Hero() {
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         {/* FOTO */}
         <div className="col-span-12 lg:col-span-7 flex justify-center lg:block">
-          <div className="relative w-[90%] sm:w-[80%] md:w-[70%] lg:w-full overflow-hidden aspect-[940/1170]">
-            <Image
-              src="/images/greks.jpg"
-              alt="Gregor portrait"
-              fill
-              sizes="(min-width:1024px) 58vw, 100vw"
-              className="object-cover"
-              priority
-            />
+          <div
+            className={`
+              relative w-[90%] sm:w-[80%] md:w-[70%] lg:w-full overflow-hidden aspect-[940/1170]
+              transition-all duration-700 ease-out transform
+              ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
+            `}
+            style={{ transitionDelay: '120ms' }}
+          >
+            <div className="absolute inset-0 will-change-transform">
+              <Image
+                src="/images/greks.jpg"
+                alt="Gregor portrait"
+                fill
+                sizes="(min-width:1024px) 58vw, 100vw"
+                priority
+                className="object-cover scale-[1.1] transition-transform duration-[400ms] ease-out"
+                style={{
+                  transform: `translateY(${offset}px) scale(1.1)`,
+                }}
+              />
+            </div>
           </div>
         </div>
 
         {/* TEKST + NUPP */}
         <div
-          className="
+          className={`
             col-span-12 lg:col-span-5 lg:pl-6 flex flex-col justify-between
-            mt-0 lg:mt-0
-            items-start
-            px-[5%] sm:px-[10%] md:px-0
-          "
+            items-start px-[5%] sm:px-[10%] md:px-0
+            transition-all duration-700 ease-out transform
+            ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
+          `}
+          style={{ transitionDelay: '240ms' }}
         >
           <h2
             className="
               font-extrabold text-[#29282D] uppercase leading-[1.1] text-left
-              /* sinu algsed baassuurused väiksematel */
               text-[28px] sm:text-[36px]
-              /* sujuv desktop: 48px... kuni 86px */
               md:text-[clamp(48px,3.6vw,64px)]
               2xl:text-[clamp(64px,4.4vw,86px)]
-              /* ei lase sõnadel ümber murduda – ridade asetus jääb samaks */
               whitespace-nowrap
             "
           >
@@ -70,16 +93,16 @@ export default function Hero() {
 
           <div className="mt-6 lg:mt-auto text-left">
             <p
-  className="
-    max-w-[698px] text-[#29282D] font-normal leading-[1.55]
-    text-[16px] sm:text-[18px] md:text-[clamp(20px,1.2vw,24px)] sm:text-[clamp(24px,1.7vw,32px)]
-  "
->
-  Gregor Hargel is a Bali-based video editor focused on short-form
-  videos with a smooth, cinematic rhythm — blending seamless flow,
-  sharp pacing, and storytelling that keeps viewers hooked.
-</p>
-
+              className="
+                max-w-[698px] text-[#29282D] font-normal leading-[1.55]
+                text-[16px] sm:text-[18px]
+                md:text-[clamp(20px,1.2vw,24px)]
+              "
+            >
+              Gregor Hargel is a Bali-based video editor focused on short-form
+              videos with a smooth, cinematic rhythm — blending seamless flow,
+              sharp pacing, and storytelling that keeps viewers hooked.
+            </p>
 
             <Link
               href="/portfolio"

@@ -12,6 +12,20 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
 
+  // desktop nav refs
+  const homeRef = useRef<HTMLAnchorElement | null>(null);
+  const portfolioRef = useRef<HTMLAnchorElement | null>(null);
+  const contactRef = useRef<HTMLAnchorElement | null>(null);
+  const navContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // underline state (desktop)
+  const [indicator, setIndicator] = useState({
+    left: 0,
+    width: 0,
+    visible: false,
+    isHover: false,
+  });
+
   // Lukusta body scroll, kui menüü on lahti
   useEffect(() => {
     const cls = 'overflow-hidden';
@@ -25,33 +39,105 @@ export default function Header() {
     setOpen(false);
   }, [pathname]);
 
-  // Fookus esimesele lingile (kui soovid; visuaalset rõngast ei näidata)
+  // Fookus esimesele lingile mobiilimenüüs
   useEffect(() => {
     if (open) setTimeout(() => firstLinkRef.current?.focus(), 0);
   }, [open]);
+
+  // aktiivse lingi ref (desktop)
+  const getActiveRef = () => {
+    if (pathname === '/') return homeRef;
+    if (pathname === '/portfolio') return portfolioRef;
+    if (pathname === '/contact') return contactRef;
+    return null;
+  };
+
+  // uuenda desktop underline positsiooni
+  const setIndicatorToElement = (
+    el: HTMLAnchorElement | null,
+    isHover: boolean
+  ) => {
+    if (!el || !navContainerRef.current) return;
+
+    const linkRect = el.getBoundingClientRect();
+    const containerRect = navContainerRef.current.getBoundingClientRect();
+
+    setIndicator({
+      left: linkRect.left - containerRect.left,
+      width: linkRect.width,
+      visible: true,
+      isHover,
+    });
+  };
+
+  // path muutudes: underline aktiivse lingi alla
+  useEffect(() => {
+    const activeRef = getActiveRef();
+    if (activeRef?.current) {
+      setIndicatorToElement(activeRef.current, false);
+    }
+  }, [pathname]);
+
+  // resize korral korrigeeri asendit
+  useEffect(() => {
+    const handleResize = () => {
+      const activeRef = getActiveRef();
+      if (activeRef?.current) {
+        setIndicatorToElement(activeRef.current, false);
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
+    };
+  }, [pathname]);
 
   const NavLink = ({
     href,
     children,
     className = '',
+    linkRef,
   }: {
     href: string;
     children: React.ReactNode;
     className?: string;
+    linkRef?: React.RefObject<HTMLAnchorElement>;
   }) => {
     const active = pathname === href;
+
+    const handleMouseEnter = () => {
+      if (typeof window === 'undefined') return;
+      if (window.innerWidth < 768) return; // ainult desktop
+      if (!linkRef?.current) return;
+
+      // hoveril, kui pole aktiivne – heledam must
+      setIndicatorToElement(linkRef.current, !active);
+    };
+
+    const handleMouseLeave = () => {
+      if (typeof window === 'undefined') return;
+      if (window.innerWidth < 768) return;
+
+      const activeRef = getActiveRef();
+      if (activeRef?.current) {
+        setIndicatorToElement(activeRef.current, false);
+      }
+    };
+
     return (
       <Link
         href={href}
+        ref={linkRef}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         className={`${inter.className} relative uppercase text-[16px] leading-[19px] tracking-[0.02em] outline-none focus:outline-none ${className}`}
       >
         {children}
-        <span
-          aria-hidden
-          className={`pointer-events-none absolute left-0 -bottom-[6px] h-[2px] w-full bg-black origin-left transition-transform duration-200 ${
-            active ? 'scale-x-100' : 'scale-x-0'
-          }`}
-        />
       </Link>
     );
   };
@@ -70,10 +156,33 @@ export default function Header() {
                 GREGOR HARGEL
               </Link>
 
-              <nav className="ml-auto flex items-start gap-[34px] text-black">
-                <NavLink href="/">HOME</NavLink>
-                <NavLink href="/portfolio">PORTFOLIO</NavLink>
-                <NavLink href="/contact">CONTACT</NavLink>
+              <nav
+                ref={navContainerRef}
+                className="ml-auto flex items-start gap-[34px] text-black relative"
+              >
+                <NavLink href="/" linkRef={homeRef}>
+                  HOME
+                </NavLink>
+                <NavLink href="/portfolio" linkRef={portfolioRef}>
+                  PORTFOLIO
+                </NavLink>
+                <NavLink href="/contact" linkRef={contactRef}>
+                  CONTACT
+                </NavLink>
+
+                {/* liikuv underline – ainult desktopil */}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -bottom-[6px] h-[2px] hidden md:block origin-left transition-all duration-300"
+                  style={{
+                    left: indicator.left,
+                    width: indicator.width,
+                    opacity: indicator.visible ? 1 : 0,
+                    backgroundColor: indicator.isHover
+                      ? 'rgba(0,0,0,0.45)' // hover – heledam must
+                      : '#000000', // aktiivne – täismust
+                  }}
+                />
               </nav>
             </div>
           </div>
@@ -117,7 +226,7 @@ export default function Header() {
           {/* Täisekraani overlay menüü */}
           <div
             id="mobile-menu"
-            style={{ WebkitTapHighlightColor: 'transparent' }} // iOS kliki-halli eemaldus
+            style={{ WebkitTapHighlightColor: 'transparent' }}
             className={`fixed inset-0 z-[70] bg-[#F5F5F1] text-[#29282D] transition-opacity duration-200 ${
               open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             }`}
@@ -137,31 +246,50 @@ export default function Header() {
               </button>
             </div>
 
-            {/* Lingid */}
-            <nav className="flex h-[calc(100vh-72px)] flex-col items-center justify-center gap-8">
-              <Link
-                ref={firstLinkRef}
-                href="/"
-                onClick={() => setOpen(false)}
-                className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none`}
-              >
-                Home
-              </Link>
-              <Link
-                href="/portfolio"
-                onClick={() => setOpen(false)}
-                className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none`}
-              >
-                Portfolio
-              </Link>
-              <Link
-                href="/contact"
-                onClick={() => setOpen(false)}
-                className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none`}
-              >
-                Contact
-              </Link>
-            </nav>
+            {/* Lingid mobiilimenüüs */}
+           {/* Lingid mobiilimenüüs */}
+<nav className="flex h-[calc(100vh-72px)] flex-col items-center justify-center gap-8">
+  <Link
+    ref={firstLinkRef}
+    href="/"
+    onClick={() => setOpen(false)}
+    className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
+  >
+    <span className="inline-block relative">
+      Home
+      {pathname === '/' && (
+        <span className="block h-[2px] bg-black w-full mt-2" />
+      )}
+    </span>
+  </Link>
+
+  <Link
+    href="/portfolio"
+    onClick={() => setOpen(false)}
+    className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
+  >
+    <span className="inline-block relative">
+      Portfolio
+      {pathname === '/portfolio' && (
+        <span className="block h-[2px] bg-black w-full mt-2" />
+      )}
+    </span>
+  </Link>
+
+  <Link
+    href="/contact"
+    onClick={() => setOpen(false)}
+    className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
+  >
+    <span className="inline-block relative">
+      Contact
+      {pathname === '/contact' && (
+        <span className="block h-[2px] bg-black w-full mt-2" />
+      )}
+    </span>
+  </Link>
+</nav>
+
           </div>
         </div>
       </div>
