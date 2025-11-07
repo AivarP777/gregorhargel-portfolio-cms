@@ -1,22 +1,17 @@
 'use client'
 
-<<<<<<< HEAD
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+
+type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 export default function ContactPage() {
   const [isMounted, setIsMounted] = useState(false)
+  const [status, setStatus] = useState<Status>('idle')
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   useEffect(() => {
     setIsMounted(true)
   }, [])
-=======
-import { useState } from 'react'
-
-export default function ContactPage() {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
-  const [errorMsg, setErrorMsg] = useState<string | null>(null)
->>>>>>> 6c633b23a9826c35c947acc866fa3923c934c25b
 
   return (
     <main className="bg-[#F5F5F1] min-h-screen">
@@ -90,14 +85,15 @@ export default function ContactPage() {
                   return
                 }
 
-                const res = await fetch('/api/contacts', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ name, email, message }),
-                })
-
                 try {
+                  const res = await fetch('/api/contacts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, message }),
+                  })
+
                   const data = await res.json().catch(() => ({}))
+
                   if (res.ok && (data?.ok ?? true)) {
                     setStatus('sent')
                     form.reset()

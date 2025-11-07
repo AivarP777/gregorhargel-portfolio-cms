@@ -106,7 +106,7 @@ export default function Header() {
     href: string;
     children: React.ReactNode;
     className?: string;
-    linkRef?: React.RefObject<HTMLAnchorElement>;
+    linkRef?: React.RefObject<HTMLAnchorElement | null>; // ⬅️ SIIN MUUDATUS
   }) => {
     const active = pathname === href;
 
@@ -247,49 +247,47 @@ export default function Header() {
             </div>
 
             {/* Lingid mobiilimenüüs */}
-           {/* Lingid mobiilimenüüs */}
-<nav className="flex h-[calc(100vh-72px)] flex-col items-center justify-center gap-8">
-  <Link
-    ref={firstLinkRef}
-    href="/"
-    onClick={() => setOpen(false)}
-    className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
-  >
-    <span className="inline-block relative">
-      Home
-      {pathname === '/' && (
-        <span className="block h-[2px] bg-black w-full mt-2" />
-      )}
-    </span>
-  </Link>
+            <nav className="flex h-[calc(100vh-72px)] flex-col items-center justify-center gap-8">
+              <Link
+                ref={firstLinkRef}
+                href="/"
+                onClick={() => setOpen(false)}
+                className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
+              >
+                <span className="inline-block relative">
+                  Home
+                  {pathname === '/' && (
+                    <span className="block h-[2px] bg-black w-full mt-2" />
+                  )}
+                </span>
+              </Link>
 
-  <Link
-    href="/portfolio"
-    onClick={() => setOpen(false)}
-    className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
-  >
-    <span className="inline-block relative">
-      Portfolio
-      {pathname === '/portfolio' && (
-        <span className="block h-[2px] bg-black w-full mt-2" />
-      )}
-    </span>
-  </Link>
+              <Link
+                href="/portfolio"
+                onClick={() => setOpen(false)}
+                className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
+              >
+                <span className="inline-block relative">
+                  Portfolio
+                  {pathname === '/portfolio' && (
+                    <span className="block h-[2px] bg-black w-full mt-2" />
+                  )}
+                </span>
+              </Link>
 
-  <Link
-    href="/contact"
-    onClick={() => setOpen(false)}
-    className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
-  >
-    <span className="inline-block relative">
-      Contact
-      {pathname === '/contact' && (
-        <span className="block h-[2px] bg-black w-full mt-2" />
-      )}
-    </span>
-  </Link>
-</nav>
-
+              <Link
+                href="/contact"
+                onClick={() => setOpen(false)}
+                className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
+              >
+                <span className="inline-block relative">
+                  Contact
+                  {pathname === '/contact' && (
+                    <span className="block h-[2px] bg-black w-full mt-2" />
+                  )}
+                </span>
+              </Link>
+            </nav>
           </div>
         </div>
       </div>
