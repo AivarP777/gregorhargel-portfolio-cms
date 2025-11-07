@@ -7,15 +7,17 @@ import { useEffect, useRef, useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'], weight: ['400'] });
 
+const NAV_ITEMS = [
+  { href: '/', label: 'HOME' },
+  { href: '/portfolio', label: 'PORTFOLIO' },
+  { href: '/contact', label: 'CONTACT' },
+] as const;
+
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
 
-  // desktop nav refs
-  const homeRef = useRef<HTMLAnchorElement | null>(null);
-  const portfolioRef = useRef<HTMLAnchorElement | null>(null);
-  const contactRef = useRef<HTMLAnchorElement | null>(null);
   const navContainerRef = useRef<HTMLDivElement | null>(null);
 
   // underline state (desktop)
@@ -26,7 +28,7 @@ export default function Header() {
     isHover: false,
   });
 
-  // Lukusta body scroll, kui menüü on lahti
+  // Lukusta body scroll, kui mobiili-menüü on lahti
   useEffect(() => {
     const cls = 'overflow-hidden';
     if (open) document.body.classList.add(cls);
@@ -34,7 +36,7 @@ export default function Header() {
     return () => document.body.classList.remove(cls);
   }, [open]);
 
-  // Sulge menüü, kui marsruut muutub
+  // Sulge mobiili-menüü, kui route muutub
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
@@ -44,15 +46,6 @@ export default function Header() {
     if (open) setTimeout(() => firstLinkRef.current?.focus(), 0);
   }, [open]);
 
-  // aktiivse lingi ref (desktop)
-  const getActiveRef = () => {
-    if (pathname === '/') return homeRef;
-    if (pathname === '/portfolio') return portfolioRef;
-    if (pathname === '/contact') return contactRef;
-    return null;
-  };
-
-  // uuenda desktop underline positsiooni
   const setIndicatorToElement = (
     el: HTMLAnchorElement | null,
     isHover: boolean
@@ -70,20 +63,40 @@ export default function Header() {
     });
   };
 
-  // path muutudes: underline aktiivse lingi alla
+  // Kui pathname muutub, joonda underline aktiivse lingi alla
   useEffect(() => {
-    const activeRef = getActiveRef();
-    if (activeRef?.current) {
-      setIndicatorToElement(activeRef.current, false);
+    if (!navContainerRef.current) return;
+
+    const activeHref =
+      pathname === '/' || pathname === '' ? '/' : pathname;
+
+    const activeLink =
+      navContainerRef.current.querySelector<HTMLAnchorElement>(
+        `a[data-path="${activeHref}"]`
+      );
+
+    if (activeLink) {
+      setIndicatorToElement(activeLink, false);
+    } else {
+      // kui ei leia, peidame joone
+      setIndicator((prev) => ({ ...prev, visible: false }));
     }
   }, [pathname]);
 
-  // resize korral korrigeeri asendit
+  // Resize korral korrigeeri asendit
   useEffect(() => {
     const handleResize = () => {
-      const activeRef = getActiveRef();
-      if (activeRef?.current) {
-        setIndicatorToElement(activeRef.current, false);
+      if (!navContainerRef.current) return;
+      const activeHref =
+        pathname === '/' || pathname === '' ? '/' : pathname;
+
+      const activeLink =
+        navContainerRef.current.querySelector<HTMLAnchorElement>(
+          `a[data-path="${activeHref}"]`
+        );
+
+      if (activeLink) {
+        setIndicatorToElement(activeLink, false);
       }
     };
 
@@ -101,38 +114,42 @@ export default function Header() {
     href,
     children,
     className = '',
-    linkRef,
   }: {
     href: string;
     children: React.ReactNode;
     className?: string;
-    linkRef?: React.RefObject<HTMLAnchorElement>;
   }) => {
-    const active = pathname === href;
+    const active = pathname === href || (href === '/' && pathname === '');
 
-    const handleMouseEnter = () => {
+    const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
       if (typeof window === 'undefined') return;
       if (window.innerWidth < 768) return; // ainult desktop
-      if (!linkRef?.current) return;
 
-      // hoveril, kui pole aktiivne – heledam must
-      setIndicatorToElement(linkRef.current, !active);
+      setIndicatorToElement(e.currentTarget, !active);
     };
 
     const handleMouseLeave = () => {
       if (typeof window === 'undefined') return;
       if (window.innerWidth < 768) return;
 
-      const activeRef = getActiveRef();
-      if (activeRef?.current) {
-        setIndicatorToElement(activeRef.current, false);
+      if (!navContainerRef.current) return;
+      const activeHref =
+        pathname === '/' || pathname === '' ? '/' : pathname;
+
+      const activeLink =
+        navContainerRef.current.querySelector<HTMLAnchorElement>(
+          `a[data-path="${activeHref}"]`
+        );
+
+      if (activeLink) {
+        setIndicatorToElement(activeLink, false);
       }
     };
 
     return (
       <Link
         href={href}
-        ref={linkRef}
+        data-path={href}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         className={`${inter.className} relative uppercase text-[16px] leading-[19px] tracking-[0.02em] outline-none focus:outline-none ${className}`}
@@ -160,15 +177,11 @@ export default function Header() {
                 ref={navContainerRef}
                 className="ml-auto flex items-start gap-[34px] text-black relative"
               >
-                <NavLink href="/" linkRef={homeRef}>
-                  HOME
-                </NavLink>
-                <NavLink href="/portfolio" linkRef={portfolioRef}>
-                  PORTFOLIO
-                </NavLink>
-                <NavLink href="/contact" linkRef={contactRef}>
-                  CONTACT
-                </NavLink>
+                {NAV_ITEMS.map((item) => (
+                  <NavLink key={item.href} href={item.href}>
+                    {item.label}
+                  </NavLink>
+                ))}
 
                 {/* liikuv underline – ainult desktopil */}
                 <span
@@ -247,49 +260,47 @@ export default function Header() {
             </div>
 
             {/* Lingid mobiilimenüüs */}
-           {/* Lingid mobiilimenüüs */}
-<nav className="flex h-[calc(100vh-72px)] flex-col items-center justify-center gap-8">
-  <Link
-    ref={firstLinkRef}
-    href="/"
-    onClick={() => setOpen(false)}
-    className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
-  >
-    <span className="inline-block relative">
-      Home
-      {pathname === '/' && (
-        <span className="block h-[2px] bg-black w-full mt-2" />
-      )}
-    </span>
-  </Link>
+            <nav className="flex h-[calc(100vh-72px)] flex-col items-center justify-center gap-8">
+              <Link
+                ref={firstLinkRef}
+                href="/"
+                onClick={() => setOpen(false)}
+                className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
+              >
+                <span className="inline-block relative">
+                  Home
+                  {pathname === '/' && (
+                    <span className="block h-[2px] bg-black w-full mt-2" />
+                  )}
+                </span>
+              </Link>
 
-  <Link
-    href="/portfolio"
-    onClick={() => setOpen(false)}
-    className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
-  >
-    <span className="inline-block relative">
-      Portfolio
-      {pathname === '/portfolio' && (
-        <span className="block h-[2px] bg-black w-full mt-2" />
-      )}
-    </span>
-  </Link>
+              <Link
+                href="/portfolio"
+                onClick={() => setOpen(false)}
+                className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
+              >
+                <span className="inline-block relative">
+                  Portfolio
+                  {pathname === '/portfolio' && (
+                    <span className="block h-[2px] bg-black w-full mt-2" />
+                  )}
+                </span>
+              </Link>
 
-  <Link
-    href="/contact"
-    onClick={() => setOpen(false)}
-    className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
-  >
-    <span className="inline-block relative">
-      Contact
-      {pathname === '/contact' && (
-        <span className="block h-[2px] bg-black w-full mt-2" />
-      )}
-    </span>
-  </Link>
-</nav>
-
+              <Link
+                href="/contact"
+                onClick={() => setOpen(false)}
+                className={`${inter.className} uppercase text-[28px] tracking-wide outline-none focus:outline-none text-center`}
+              >
+                <span className="inline-block relative">
+                  Contact
+                  {pathname === '/contact' && (
+                    <span className="block h-[2px] bg-black w-full mt-2" />
+                  )}
+                </span>
+              </Link>
+            </nav>
           </div>
         </div>
       </div>
