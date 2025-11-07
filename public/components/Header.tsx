@@ -13,11 +13,19 @@ const NAV_ITEMS = [
   { href: '/contact', label: 'CONTACT' },
 ] as const;
 
+// Eemaldame lõpu kaldkriipsud, aga jätame "/" alles
+const normalizePath = (path: string) => {
+  if (!path) return '/';
+  if (path === '/') return '/';
+  return path.replace(/\/+$/, '');
+};
+
 export default function Header() {
-  const pathname = usePathname();
+  const rawPathname = usePathname() || '/';
+  const pathname = normalizePath(rawPathname);
+
   const [open, setOpen] = useState(false);
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
-
   const navContainerRef = useRef<HTMLDivElement | null>(null);
 
   // underline state (desktop)
@@ -63,12 +71,10 @@ export default function Header() {
     });
   };
 
-  // Kui pathname muutub, joonda underline aktiivse lingi alla
-  useEffect(() => {
+  const updateIndicatorToActive = () => {
     if (!navContainerRef.current) return;
 
-    const activeHref =
-      pathname === '/' || pathname === '' ? '/' : pathname;
+    const activeHref = pathname || '/';
 
     const activeLink =
       navContainerRef.current.querySelector<HTMLAnchorElement>(
@@ -78,26 +84,24 @@ export default function Header() {
     if (activeLink) {
       setIndicatorToElement(activeLink, false);
     } else {
-      // kui ei leia, peidame joone
-      setIndicator((prev) => ({ ...prev, visible: false }));
+      // kui ei leia aktiivset linki, peidame joone
+      setIndicator((prev) => ({
+        ...prev,
+        visible: false,
+        isHover: false,
+      }));
     }
+  };
+
+  // Kui pathname muutub, joonda underline aktiivsele lingile
+  useEffect(() => {
+    updateIndicatorToActive();
   }, [pathname]);
 
   // Resize korral korrigeeri asendit
   useEffect(() => {
     const handleResize = () => {
-      if (!navContainerRef.current) return;
-      const activeHref =
-        pathname === '/' || pathname === '' ? '/' : pathname;
-
-      const activeLink =
-        navContainerRef.current.querySelector<HTMLAnchorElement>(
-          `a[data-path="${activeHref}"]`
-        );
-
-      if (activeLink) {
-        setIndicatorToElement(activeLink, false);
-      }
+      updateIndicatorToActive();
     };
 
     if (typeof window !== 'undefined') {
@@ -119,7 +123,8 @@ export default function Header() {
     children: React.ReactNode;
     className?: string;
   }) => {
-    const active = pathname === href || (href === '/' && pathname === '');
+    const normalizedHref = normalizePath(href);
+    const active = pathname === normalizedHref;
 
     const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
       if (typeof window === 'undefined') return;
@@ -132,24 +137,13 @@ export default function Header() {
       if (typeof window === 'undefined') return;
       if (window.innerWidth < 768) return;
 
-      if (!navContainerRef.current) return;
-      const activeHref =
-        pathname === '/' || pathname === '' ? '/' : pathname;
-
-      const activeLink =
-        navContainerRef.current.querySelector<HTMLAnchorElement>(
-          `a[data-path="${activeHref}"]`
-        );
-
-      if (activeLink) {
-        setIndicatorToElement(activeLink, false);
-      }
+      updateIndicatorToActive();
     };
 
     return (
       <Link
         href={href}
-        data-path={href}
+        data-path={normalizedHref}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         className={`${inter.className} relative uppercase text-[16px] leading-[19px] tracking-[0.02em] outline-none focus:outline-none ${className}`}
