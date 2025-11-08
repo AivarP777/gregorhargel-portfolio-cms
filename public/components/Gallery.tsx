@@ -3,7 +3,7 @@
 import Link from 'next/link'
 
 export default function Gallery() {
-  const vimeoUrl = 'https://player.vimeo.com/video/1130428641'
+  const vimeoUrl = 'https://www.youtube.com/embed/C4xMmETZSPY'
 
   return (
     <section
