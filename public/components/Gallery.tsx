@@ -66,9 +66,7 @@ export default function Gallery() {
               text-left
             "
           >
-            When I began editing the first rough cut, I asked myself — what does cooking represent to me? 
-            The answer that came instantly was elegance. That idea shaped the entire mood of the piece 
-            and led me to the perfect music choice for this commercial.
+            While I was cutting this, I asked myself, what does cooking represent to me. The brief was to cut a 20 second food commercial, using library assets. I discovered a music track that perfectly matched the tone of the video and shortened it to fit the 20-second format. The result was an engaging edit that earned me the title of Editor of the Month.
           </p>
 
           <Link
