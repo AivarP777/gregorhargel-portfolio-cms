@@ -3,7 +3,7 @@
 import Link from 'next/link'
 
 export default function Gallery() {
-  const vimeoUrl = 'https://www.youtube.com/embed/C4xMmETZSPY'
+  const vimeoUrl = 'https://fast.wistia.net/embed/iframe/gtw1tkpfpi'
 
   return (
     <section

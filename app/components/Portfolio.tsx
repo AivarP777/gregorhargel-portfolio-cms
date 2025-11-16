@@ -2,9 +2,9 @@
 
 export default function PortfolioChecker() {
   // 🎬 Siin muuda oma Vimeo videote lingid
-  const vimeo1 = 'https://www.youtube.com/embed/C4xMmETZSPY'
-  const vimeo2 = 'https://www.youtube.com/embed/6z4B11dwiOo'
-  const vimeo3 = 'https://www.youtube.com/embed/0qV850EHRq8'
+  const vimeo1 = 'https://fast.wistia.net/embed/iframe/gtw1tkpfpi'
+  const vimeo2 = 'https://fast.wistia.net/embed/iframe/wuhyrfgv7m'
+  const vimeo3 = 'https://fast.wistia.net/embed/iframe/v92pfxyt5s'
 
   const projects = [
     {
