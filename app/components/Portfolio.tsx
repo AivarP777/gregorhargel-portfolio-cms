@@ -13,7 +13,7 @@ export default function PortfolioChecker() {
       src: vimeo1,
       label: 'Commercial',
       title: 'Unsplice Kitchen',
-      text: 'When I began editing the first rough cut, I asked myself — what does cooking represent to me? The answer that came instantly was elegance. That idea shaped the entire mood of the piece and led me to the perfect music choice for this commercial.',
+      text: 'While I was cutting this, I asked myself, what does cooking represent to me. The brief was to cut a 20 second food commercial, using library assets. I discovered a music track that perfectly matched the tone of the video and shortened it to fit the 20-second format. The result was an engaging edit that earned me the title of Editor of the Month.',
     },
     {
       id: 2,
@@ -21,7 +21,7 @@ export default function PortfolioChecker() {
       src: vimeo2,
       label: 'Commercial',
       title: 'SONOS',
-      text: 'Everyday sounds, cinematic rhythm. A 20-second edit built entirely around pacing, texture, and tension.',
+      text: 'In the early stages of this edit, I found it challenging to shorten the footage. The goal was to create a 20-second commercial. I experimented with different sound effects and adjusted the pacing by varying clip lengths. The final cut achieved a strong sense of tension and rhythm while staying within the 20-second limit.',
     },
     {
       id: 3,
@@ -29,7 +29,7 @@ export default function PortfolioChecker() {
       src: vimeo3,
       label: 'Commercial',
       title: 'British Airways',
-      text: 'Project goal was to give a message to the viewer with only one shot followed by a title. Simple and engaging edit.',
+      text: 'This edit was about showing why flying can sometimes be the better way to travel. The goal was to deliver a message using only one shot and a title sequence. I found footage that captured the feeling of isolation and frustration, which perfectly set up the story’s punchline.',
     },
   ]
 

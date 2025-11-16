@@ -50,8 +50,7 @@ export default function PortfolioPage() {
         `}
         style={{ transitionDelay: '120ms' }}
       >
-        A growing collection — each project crafted with intention,
-        rhythm, and personality.
+        You can trust me to be reliable, meet deadlines, and make working together an enjoyable experience.
       </p>
 
       {/* 3 plokki */}

@@ -88,7 +88,7 @@ export default function Hero() {
               whitespace-nowrap
             "
           >
-            BALI-BASED<br />VIDEO EDITOR
+            COMMERCIAL<br />VIDEO EDITOR
           </h2>
 
           <div className="mt-6 lg:mt-auto text-left">
