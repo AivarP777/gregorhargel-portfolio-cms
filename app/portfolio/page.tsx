@@ -1,14 +1,17 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import Portfolio from '../components/Portfolio'
+import { client } from '../../sanity/lib/client'
+import { portfolioProjectsQuery } from '../../sanity/queries'
 
-export default function PortfolioPage() {
-  const [isMounted, setIsMounted] = useState(false)
+type Project = {
+  _id: string
+  label?: string
+  title: string
+  description?: string
+  videoUrl: string
+}
 
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+export default async function PortfolioPage() {
+  const projects: Project[] = await client.fetch(portfolioProjectsQuery)
 
   return (
     <section
@@ -21,22 +24,19 @@ export default function PortfolioPage() {
     >
       {/* Pealkiri */}
       <h1
-        className={`
+        className="
           font-[Archivo] font-extrabold uppercase text-[#29282D]
           text-[48px] sm:text-[90px] md:text-[130px] lg:text-[185px]
           leading-[1.08]
           text-center md:text-left
-
-          transition-all duration-700 ease-out transform
-          ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}
-        `}
+        "
       >
         PORTFOLIO
       </h1>
 
       {/* Alamtekst */}
       <p
-        className={`
+        className="
           mt-[24px] sm:mt-[32px] md:mt-[40px]
           max-w-[940px]
           font-[Archivo] font-extralight text-[#29282D]
@@ -44,17 +44,13 @@ export default function PortfolioPage() {
           leading-[1.4]
           text-center md:text-left
           px-[4px] sm:px-0
-
-          transition-all duration-700 ease-out transform
-          ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
-        `}
-        style={{ transitionDelay: '120ms' }}
+        "
       >
         You can trust me to be reliable, meet deadlines, and make working together an enjoyable experience.
       </p>
 
-      {/* 3 plokki */}
-      <Portfolio />
+      {/* Portfoolio plokid Sanityst */}
+      <Portfolio projects={projects} />
     </section>
   )
 }
