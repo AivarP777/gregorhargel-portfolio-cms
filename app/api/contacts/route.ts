@@ -1,14 +1,12 @@
-// /app/api/contact/route.ts
 import type { NextRequest } from "next/server";
 import { Resend } from "resend";
 
 export async function POST(req: NextRequest) {
-  // ENV muutujad – loeme need dünaamiliselt buildi ajal probleeme tekitamata
   const RESEND_KEY = process.env.RESEND_API_KEY;
   const EMAIL_FROM = process.env.EMAIL_FROM;
 
+  // Kui võtmed puuduvad, ära lase buildil katki minna
   if (!RESEND_KEY || !EMAIL_FROM) {
-    // Kui võtmed puuduvad, lõpetame viisakalt ja EI viska build errorit
     console.error("Missing RESEND_API_KEY or EMAIL_FROM");
     return Response.json(
       { ok: false, error: "Email service not configured." },
@@ -20,7 +18,7 @@ export async function POST(req: NextRequest) {
 
   const { name, email, message } = await req.json();
 
-  const TO = "hargel73@gmail.com"; // kuhu sina tahad kirja saada
+  const TO = "hargel73@gmail.com";
   const firstName = safeFirstName(name);
   const subject = `Thanks for reaching out, ${firstName}!`;
 
@@ -69,7 +67,7 @@ function safeFirstName(full: string | undefined): string {
 }
 
 function esc(s: string) {
-  return s.replace(/[&<>"']/g, (m) => ({ 
+  return s.replace(/[&<>"']/g, (m) => ({
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
