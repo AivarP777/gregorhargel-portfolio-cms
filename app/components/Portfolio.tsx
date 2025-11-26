@@ -1,15 +1,12 @@
-// app/components/Portfolio.tsx
 'use client'
 
-type Project = {
-  _id: string
-  label?: string
-  title: string
-  description?: string
-  videoUrl: string
+import type { Project } from '../../lib/portfolio'
+
+type Props = {
+  projects: Project[]
 }
 
-export default function Portfolio({ projects }: { projects: Project[] }) {
+export default function Portfolio({ projects }: Props) {
   return (
     <div className="mt-[80px]">
       {projects.map((p, index) => {
@@ -34,6 +31,7 @@ export default function Portfolio({ projects }: { projects: Project[] }) {
                   allow="autoplay; fullscreen; picture-in-picture"
                   allowFullScreen
                   title={p.title}
+                  loading="lazy"
                 />
               </div>
             </div>

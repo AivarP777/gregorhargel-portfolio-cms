@@ -1,17 +1,8 @@
 import Portfolio from '../components/Portfolio'
-import { client } from '../../sanity/lib/client'
-import { portfolioProjectsQuery } from '../../sanity/queries'
-
-type Project = {
-  _id: string
-  label?: string
-  title: string
-  description?: string
-  videoUrl: string
-}
+import { getPortfolioProjects, type Project } from '../../lib/portfolio'
 
 export default async function PortfolioPage() {
-  const projects: Project[] = await client.fetch(portfolioProjectsQuery)
+  const projects: Project[] = await getPortfolioProjects()
 
   return (
     <section
@@ -22,7 +13,6 @@ export default async function PortfolioPage() {
         pb-[100px] sm:pb-[160px] md:pb-[200px]
       "
     >
-      {/* Pealkiri */}
       <h1
         className="
           font-[Archivo] font-extrabold uppercase text-[#29282D]
@@ -34,7 +24,6 @@ export default async function PortfolioPage() {
         PORTFOLIO
       </h1>
 
-      {/* Alamtekst */}
       <p
         className="
           mt-[24px] sm:mt-[32px] md:mt-[40px]
