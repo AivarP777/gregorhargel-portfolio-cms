@@ -55,12 +55,12 @@ export default function Footer() {
         {/* Made by DuoCom */}
         <div className="hidden md:block absolute bottom-[20px] right-[104px] text-right">
   <Link
-    href="https://www.aivarploom.com/#home"
+    href="https://www.duocom.ee"
     target="_blank"
     rel="noopener noreferrer"
     className="text-[#F5F6F1]/50 hover:text-[#F5F6F1] text-[14px] font-light transition-colors duration-300"
   >
-    made by <span className="font-normal">AivarPloom</span>
+    made by <span className="font-normal">DuoCom</span>
   </Link>
 </div>
 
