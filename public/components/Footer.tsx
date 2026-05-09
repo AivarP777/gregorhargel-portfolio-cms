@@ -60,7 +60,7 @@ export default function Footer() {
     rel="noopener noreferrer"
     className="text-[#F5F6F1]/50 hover:text-[#F5F6F1] text-[14px] font-light transition-colors duration-300"
   >
-    made by <span className="font-normal">AP</span>
+    made by <span className="font-normal">AivarPloom</span>
   </Link>
 </div>
 
